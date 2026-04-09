@@ -95,6 +95,7 @@ def process_video(
     alpha: float,
     min_area: int,
     mode: str,
+    progress_cb=None,
 ) -> None:
     cap = cv2.VideoCapture(input_path)
     if not cap.isOpened():
@@ -130,6 +131,8 @@ def process_video(
 
         pct = (i + 1) / total_frames * 100
         print(f"\r  Frame {i+1}/{total_frames}  ({pct:.0f}%)  meshed={meshed_frames}", end="", flush=True)
+        if progress_cb:
+            progress_cb(i + 1, total_frames, meshed_frames)
 
     print()
     cap.release()
