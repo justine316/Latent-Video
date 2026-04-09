@@ -2,7 +2,7 @@ import { useState, useRef, useCallback } from "react";
 import axios from "axios";
 import "./App.css";
 
-const API = "";
+const API = import.meta.env.VITE_API_URL || "";
 
 const DEFAULT_OPTS = {
   threshold: 240,

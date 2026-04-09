@@ -5,9 +5,11 @@ import uuid
 import threading
 from flask import Flask, request, jsonify, send_file
 from flask.helpers import send_from_directory
+from flask_cors import CORS
 from mesh_blank_spaces import process_video
 
 app = Flask(__name__, static_folder="frontend/dist", static_url_path="")
+CORS(app, origins=["https://latentspace.media", "http://localhost:5173", "http://localhost:5000"])
 
 UPLOAD_DIR = "uploads"
 OUTPUT_DIR = "outputs"
