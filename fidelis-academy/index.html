@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fidelis Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    html, body {
+      width:100%; height:100%;
+      background:#000;
+      overflow:hidden;
+      font-family:'EB Garamond', serif;
+    }
+
+    /* ── INTRO WRAPPER ── */
+    #intro {
+      position:fixed; inset:0; z-index:100;
+      overflow:hidden;
+      background:#000;
+    }
+
+    /* ── SCENE (zooms out) ── */
+    #scene {
+      width:100%; height:100%;
+      position:absolute; inset:0;
+      transform: scale(5);
+      transform-origin: 50% 47%;
+      transition: transform 4s cubic-bezier(.22,.6,.36,1);
+    }
+    #scene.zoomed { transform: scale(1); }
+
+    /* ── BACKGROUND SVG ── */
+    #bg {
+      position:absolute; inset:0;
+      width:100%; height:100%;
+    }
+
+    /* ── GATE DOOR WRAPPERS ── */
+    #gate-wrap {
+      position:absolute;
+      /* these % values align the doors over the SVG pillars */
+      left: 38.4%;
+      top:  13%;
+      width: 23.2%;
+      height: 57%;
+      display:flex;
+      perspective: 1400px;
+      perspective-origin: 50% 48%;
+    }
+
+    .gate-door {
+      width:50%; height:100%;
+      flex-shrink:0;
+    }
+    .gate-door svg { display:block; width:100%; height:100%; }
+
+    #door-left  { transform-origin: 0 50%;    transition: transform 2.4s cubic-bezier(.4,0,.2,1); }
+    #door-right { transform-origin: 100% 50%; transition: transform 2.4s cubic-bezier(.4,0,.2,1); }
+    #door-left.open  { transform: rotateY(-84deg); }
+    #door-right.open { transform: rotateY(84deg); }
+
+    /* ── TITLE ── */
+    #title {
+      position:absolute;
+      top:4%; left:50%; transform:translateX(-50%);
+      text-align:center; z-index:10;
+      opacity:0; transition:opacity 1.2s;
+      pointer-events:none; white-space:nowrap;
+    }
+    #title.show { opacity:1; }
+    #title h1 {
+      font-family:'Cinzel Decorative',serif;
+      font-size: clamp(1rem,2.8vw,2.4rem);
+      color:#c9a84c;
+      letter-spacing:.35em;
+      text-shadow: 0 0 24px rgba(201,168,76,.45), 2px 2px 6px #000;
+    }
+    #title p {
+      font-family:'Cinzel',serif;
+      font-size:clamp(.55rem,1.1vw,.85rem);
+      color:#aaa;
+      letter-spacing:.35em;
+      margin-top:.4em;
+    }
+
+    /* ── VIGNETTE ── */
+    #vignette {
+      position:absolute; inset:0;
+      background: radial-gradient(ellipse 80% 80% at 50% 50%,
+        transparent 40%, rgba(0,0,0,.65) 100%);
+      pointer-events:none;
+    }
+
+    /* ── CHOICES ── */
+    #choices {
+      position:fixed; inset:0; z-index:200;
+      display:flex;
+      align-items:center; justify-content:center;
+      gap:clamp(2rem,8vw,8rem);
+      opacity:0; pointer-events:none;
+      transition:opacity 1.2s;
+      background:radial-gradient(ellipse 90% 70% at 50% 70%,
+        rgba(0,0,0,.35) 0%, rgba(0,0,0,.75) 100%);
+    }
+    #choices.show { opacity:1; pointer-events:all; }
+
+    .choice {
+      display:block; text-decoration:none;
+      text-align:center; position:relative;
+      transition: transform .3s ease;
+    }
+    .choice:hover { transform: translateY(-8px) scale(1.04); }
+
+    .choice-door {
+      width: clamp(130px,16vw,240px);
+      aspect-ratio: 1/1.9;
+      background: linear-gradient(175deg, #1c1c1c 0%, #0c0c0c 60%);
+      border: 1px solid #6b5a2a;
+      position:relative;
+      overflow:visible;
+    }
+    /* arched top using ::before */
+    .choice-door::before {
+      content:'';
+      position:absolute;
+      top: calc(-1 * clamp(65px,8vw,120px));
+      left:-1px; right:-1px;
+      height: clamp(65px,8vw,120px);
+      border:1px solid #6b5a2a;
+      border-bottom:none;
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      background: linear-gradient(180deg, #1a1a1a, #161616);
+    }
+    .choice-door-inner {
+      position:absolute; inset:8%;
+      border:1px solid #3a3020;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      gap:.8em;
+    }
+    .choice-icon {
+      font-size:clamp(1.6rem,3.5vw,3rem);
+      color:#c9a84c;
+      filter:drop-shadow(0 0 10px rgba(201,168,76,.4));
+    }
+    .choice-label {
+      font-family:'Cinzel',serif;
+      font-size:clamp(.55rem,1.1vw,.9rem);
+      letter-spacing:.18em;
+      color:#c9a84c;
+      text-shadow:0 0 12px rgba(201,168,76,.4);
+    }
+    .choice-sub {
+      font-family:'EB Garamond',serif;
+      font-style:italic;
+      font-size:clamp(.5rem,.9vw,.75rem);
+      color:#777;
+      letter-spacing:.08em;
+    }
+    /* knocker */
+    .choice-door::after {
+      content:'⬤';
+      position:absolute;
+      top:38%; left:50%;
+      transform:translate(-50%,-50%);
+      font-size:clamp(.4rem,.8vw,.6rem);
+      color:#6b5a2a;
+    }
+
+    /* ── SKIP BUTTON ── */
+    #skip {
+      position:fixed; bottom:1.5rem; right:1.5rem; z-index:400;
+      background:none;
+      border:1px solid #444;
+      color:#777;
+      font-family:'Cinzel',serif;
+      font-size:.7rem;
+      letter-spacing:.2em;
+      padding:.45rem 1.2rem;
+      cursor:pointer;
+      transition:all .25s;
+    }
+    #skip:hover { border-color:#c9a84c; color:#c9a84c; }
+
+    /* ── GRAIN OVERLAY ── */
+    #grain {
+      position:fixed; inset:0; z-index:500;
+      pointer-events:none;
+      opacity:.04;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+  </style>
+</head>
+<body>
+
+<div id="intro">
+  <div id="scene">
+
+    <!-- ══════════════════════════════════════
+         BACKGROUND SCENE SVG
+    ══════════════════════════════════════ -->
+    <svg id="bg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice"
+         xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="#0a0a0a"/>
+          <stop offset="40%"  stop-color="#2a2a2a"/>
+          <stop offset="85%"  stop-color="#555"/>
+          <stop offset="100%" stop-color="#666"/>
+        </linearGradient>
+        <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"  stop-color="#444"/>
+          <stop offset="100%" stop-color="#222"/>
+        </linearGradient>
+        <linearGradient id="path-grad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"  stop-color="#555"/>
+          <stop offset="100%" stop-color="#333"/>
+        </linearGradient>
+        <linearGradient id="mist" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="rgba(100,100,100,0)"/>
+          <stop offset="100%" stop-color="rgba(130,130,130,0.25)"/>
+        </linearGradient>
+        <linearGradient id="pillar-grad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%"   stop-color="#333"/>
+          <stop offset="30%"  stop-color="#5a5a5a"/>
+          <stop offset="60%"  stop-color="#484848"/>
+          <stop offset="100%" stop-color="#2a2a2a"/>
+        </linearGradient>
+        <linearGradient id="pillar-grad-r" x1="1" y1="0" x2="0" y2="0">
+          <stop offset="0%"   stop-color="#333"/>
+          <stop offset="30%"  stop-color="#5a5a5a"/>
+          <stop offset="60%"  stop-color="#484848"/>
+          <stop offset="100%" stop-color="#2a2a2a"/>
+        </linearGradient>
+        <filter id="blur-sky">
+          <feGaussianBlur stdDeviation="1.5"/>
+        </filter>
+      </defs>
+
+      <!-- SKY -->
+      <rect width="1920" height="1080" fill="url(#sky)"/>
+
+      <!-- BUILDING SILHOUETTE -->
+      <!-- Victorian Gothic school, symmetrical, central bell tower -->
+      <path fill="#111" d="
+        M 220,820
+        L 220,510
+        L 330,510  L 330,465
+        L 430,465  L 430,420
+        L 530,420  L 530,390
+        L 640,390  L 640,355
+        L 720,355  L 720,320
+        L 790,320  L 790,285
+        L 840,285  L 840,250
+        L 860,250  L 860,220
+        L 880,220  L 880,195
+        L 900,195  L 900,165
+        L 910,165  L 910,148
+        L 922,148  L 922,132
+        L 935,132  L 935,115
+        L 945,105  L 955,92
+        L 960,80    L 965,92
+        L 975,105  L 985,115
+        L 985,132  L 998,132
+        L 998,148  L 1010,148
+        L 1010,165 L 1020,165
+        L 1020,195 L 1040,195
+        L 1040,220 L 1060,220
+        L 1060,250 L 1080,250
+        L 1080,285 L 1130,285
+        L 1130,320 L 1200,320
+        L 1200,355 L 1280,355
+        L 1280,390 L 1390,390
+        L 1390,420 L 1490,420
+        L 1490,465 L 1590,465
+        L 1590,510 L 1700,510
+        L 1700,820
+        Z
+      "/>
+
+      <!-- Chimneys -->
+      <rect x="560" y="310" width="22" height="80" fill="#0e0e0e"/>
+      <rect x="555" y="305" width="32" height="12" fill="#0e0e0e"/>
+      <rect x="740" y="255" width="18" height="65" fill="#0e0e0e"/>
+      <rect x="735" y="250" width="28" height="10" fill="#0e0e0e"/>
+      <rect x="1162" y="255" width="18" height="65" fill="#0e0e0e"/>
+      <rect x="1157" y="250" width="28" height="10" fill="#0e0e0e"/>
+      <rect x="1338" y="310" width="22" height="80" fill="#0e0e0e"/>
+      <rect x="1333" y="305" width="32" height="12" fill="#0e0e0e"/>
+
+      <!-- Windows (arched, lighter) on main building -->
+      <!-- Left wing -->
+      <rect x="260" y="540" width="28" height="40" rx="14" fill="#2e2e2e"/>
+      <rect x="300" y="540" width="28" height="40" rx="14" fill="#2e2e2e"/>
+      <rect x="350" y="490" width="28" height="40" rx="14" fill="#2e2e2e"/>
+      <rect x="390" y="490" width="28" height="40" rx="14" fill="#2e2e2e"/>
+      <rect x="450" y="450" width="22" height="36" rx="11" fill="#2e2e2e"/>
+      <rect x="482" y="450" width="22" height="36" rx="11" fill="#2e2e2e"/>
+      <!-- Right wing (mirror) -->
+      <rect x="1632" y="540" width="28" height="40" rx="14" fill="#2e2e2e"/>
+      <rect x="1592" y="540" width="28" height="40" rx="14" fill="#2e2e2e"/>
+      <rect x="1542" y="490" width="28" height="40" rx="14" fill="#2e2e2e"/>
+      <rect x="1502" y="490" width="28" height="40" rx="14" fill="#2e2e2e"/>
+      <rect x="1448" y="450" width="22" height="36" rx="11" fill="#2e2e2e"/>
+      <rect x="1416" y="450" width="22" height="36" rx="11" fill="#2e2e2e"/>
+      <!-- Central section -->
+      <rect x="660" y="365" width="24" height="38" rx="12" fill="#2a2a2a"/>
+      <rect x="700" y="365" width="24" height="38" rx="12" fill="#2a2a2a"/>
+      <rect x="740" y="330" width="22" height="34" rx="11" fill="#2a2a2a"/>
+      <rect x="800" y="300" width="22" height="34" rx="11" fill="#2a2a2a"/>
+      <rect x="1094" y="300" width="22" height="34" rx="11" fill="#2a2a2a"/>
+      <rect x="1158" y="330" width="22" height="34" rx="11" fill="#2a2a2a"/>
+      <rect x="1196" y="365" width="24" height="38" rx="12" fill="#2a2a2a"/>
+      <rect x="1236" y="365" width="24" height="38" rx="12" fill="#2a2a2a"/>
+      <!-- Tower windows -->
+      <rect x="942" y="150" width="18" height="28" rx="9" fill="#383838"/>
+      <rect x="960" y="150" width="18" height="28" rx="9" fill="#383838"/>
+      <rect x="930" y="190" width="20" height="30" rx="10" fill="#2e2e2e"/>
+      <rect x="970" y="190" width="20" height="30" rx="10" fill="#2e2e2e"/>
+
+      <!-- Clock face on tower -->
+      <circle cx="960" cy="230" r="22" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="2"/>
+      <circle cx="960" cy="230" r="18" fill="#252525"/>
+      <line x1="960" y1="218" x2="960" y2="230" stroke="#555" stroke-width="2"/>
+      <line x1="960" y1="230" x2="970" y2="230" stroke="#555" stroke-width="2"/>
+
+      <!-- TREES — dark silhouettes flanking path -->
+      <!-- Left trees -->
+      <ellipse cx="570" cy="580" rx="55" ry="130" fill="#0d0d0d" opacity=".9"/>
+      <ellipse cx="620" cy="600" rx="40" ry="110" fill="#111" opacity=".85"/>
+      <rect x="567" y="700" width="10" height="120" fill="#0d0d0d"/>
+      <ellipse cx="480" cy="600" rx="45" ry="115" fill="#0f0f0f" opacity=".8"/>
+      <rect x="477" y="710" width="9" height="110" fill="#0d0d0d"/>
+      <!-- Right trees -->
+      <ellipse cx="1350" cy="580" rx="55" ry="130" fill="#0d0d0d" opacity=".9"/>
+      <ellipse cx="1300" cy="600" rx="40" ry="110" fill="#111" opacity=".85"/>
+      <rect x="1345" y="700" width="10" height="120" fill="#0d0d0d"/>
+      <ellipse cx="1440" cy="600" rx="45" ry="115" fill="#0f0f0f" opacity=".8"/>
+      <rect x="1437" y="710" width="9" height="110" fill="#0d0d0d"/>
+
+      <!-- MIST / ATMOSPHERE near horizon -->
+      <rect x="0" y="600" width="1920" height="100" fill="url(#mist)"/>
+
+      <!-- GROUND -->
+      <rect x="0" y="820" width="1920" height="260" fill="url(#ground)"/>
+      <!-- Ground texture lines -->
+      <line x1="0" y1="830" x2="1920" y2="830" stroke="#333" stroke-width=".5" opacity=".4"/>
+      <line x1="0" y1="850" x2="1920" y2="850" stroke="#333" stroke-width=".5" opacity=".3"/>
+
+      <!-- PATH / DRIVEWAY in perspective -->
+      <polygon points="500,1080 1420,1080 1150,615 770,615" fill="url(#path-grad)" opacity=".8"/>
+      <!-- Path edge lines -->
+      <line x1="770" y1="615" x2="500" y2="1080" stroke="#555" stroke-width="1.5" opacity=".6"/>
+      <line x1="1150" y1="615" x2="1420" y2="1080" stroke="#555" stroke-width="1.5" opacity=".6"/>
+      <!-- Centerline (dashes) -->
+      <line x1="960" y1="615" x2="960" y2="1080" stroke="#4a4a4a" stroke-width="1"
+            stroke-dasharray="20 30" opacity=".5"/>
+
+      <!-- STONE WALL — left -->
+      <rect x="0" y="660" width="737" height="90"
+            fill="#3a3a3a" stroke="#2a2a2a" stroke-width="1"/>
+      <!-- Stone blocks on left wall -->
+      <g stroke="#2a2a2a" stroke-width="0.7" opacity=".6">
+        <line x1="0" y1="690" x2="737" y2="690"/>
+        <line x1="0" y1="720" x2="737" y2="720"/>
+        <line x1="30"  y1="660" x2="30"  y2="750"/>
+        <line x1="90"  y1="660" x2="90"  y2="750"/>
+        <line x1="150" y1="660" x2="150" y2="750"/>
+        <line x1="210" y1="660" x2="210" y2="750"/>
+        <line x1="270" y1="660" x2="270" y2="750"/>
+        <line x1="330" y1="660" x2="330" y2="750"/>
+        <line x1="390" y1="660" x2="390" y2="750"/>
+        <line x1="450" y1="660" x2="450" y2="750"/>
+        <line x1="510" y1="660" x2="510" y2="750"/>
+        <line x1="570" y1="660" x2="570" y2="750"/>
+        <line x1="630" y1="660" x2="630" y2="750"/>
+        <line x1="690" y1="660" x2="690" y2="750"/>
+      </g>
+
+      <!-- STONE WALL — right -->
+      <rect x="1183" y="660" width="737" height="90"
+            fill="#3a3a3a" stroke="#2a2a2a" stroke-width="1"/>
+      <g stroke="#2a2a2a" stroke-width="0.7" opacity=".6">
+        <line x1="1183" y1="690" x2="1920" y2="690"/>
+        <line x1="1183" y1="720" x2="1920" y2="720"/>
+        <line x1="1230" y1="660" x2="1230" y2="750"/>
+        <line x1="1290" y1="660" x2="1290" y2="750"/>
+        <line x1="1350" y1="660" x2="1350" y2="750"/>
+        <line x1="1410" y1="660" x2="1410" y2="750"/>
+        <line x1="1470" y1="660" x2="1470" y2="750"/>
+        <line x1="1530" y1="660" x2="1530" y2="750"/>
+        <line x1="1590" y1="660" x2="1590" y2="750"/>
+        <line x1="1650" y1="660" x2="1650" y2="750"/>
+        <line x1="1710" y1="660" x2="1710" y2="750"/>
+        <line x1="1770" y1="660" x2="1770" y2="750"/>
+        <line x1="1830" y1="660" x2="1830" y2="750"/>
+        <line x1="1890" y1="660" x2="1890" y2="750"/>
+      </g>
+
+      <!-- ════════════════════════════════════════
+           LEFT STONE PILLAR
+      ════════════════════════════════════════ -->
+      <!-- Pillar base shadow -->
+      <rect x="688" y="200" width="92" height="620" fill="#1e1e1e" rx="1"/>
+      <!-- Pillar body -->
+      <rect x="692" y="195" width="84" height="615" fill="url(#pillar-grad)"/>
+      <!-- Stone block lines on pillar -->
+      <g stroke="#2a2a2a" stroke-width="0.8" opacity=".7">
+        <line x1="692" y1="250" x2="776" y2="250"/>
+        <line x1="692" y1="300" x2="776" y2="300"/>
+        <line x1="692" y1="350" x2="776" y2="350"/>
+        <line x1="692" y1="400" x2="776" y2="400"/>
+        <line x1="692" y1="450" x2="776" y2="450"/>
+        <line x1="692" y1="500" x2="776" y2="500"/>
+        <line x1="692" y1="550" x2="776" y2="550"/>
+        <line x1="692" y1="600" x2="776" y2="600"/>
+        <line x1="692" y1="650" x2="776" y2="650"/>
+        <line x1="692" y1="700" x2="776" y2="700"/>
+        <!-- Vertical centre crack -->
+        <line x1="734" y1="195" x2="734" y2="810" opacity=".3"/>
+      </g>
+      <!-- Pillar cap (wider) -->
+      <rect x="680" y="183" width="108" height="22" fill="#4a4a4a" rx="2"/>
+      <rect x="675" y="175" width="118" height="14" fill="#525252" rx="2"/>
+      <!-- Pillar top plinth -->
+      <rect x="682" y="155" width="104" height="26" fill="#3e3e3e" rx="2"/>
+      <!-- Urn/finial on left pillar -->
+      <ellipse cx="734" cy="148" rx="20" ry="8" fill="#555"/>
+      <path d="M714,148 Q714,110 734,105 Q754,110 754,148" fill="#484848" stroke="#333" stroke-width=".8"/>
+      <ellipse cx="734" cy="104" rx="12" ry="5" fill="#5a5a5a"/>
+      <line x1="734" y1="99" x2="734" y2="85" stroke="#444" stroke-width="3"/>
+      <ellipse cx="734" cy="83" rx="7" ry="7" fill="#555" stroke="#3a3a3a" stroke-width="1"/>
+      <!-- Plaque / Crest on left pillar -->
+      <rect x="704" y="380" width="60" height="70" rx="3" fill="#2a2a2a" stroke="#444" stroke-width="1"/>
+      <text x="734" y="408" text-anchor="middle" font-family="serif" font-size="9" fill="#888">FIDELIS</text>
+      <text x="734" y="422" text-anchor="middle" font-family="serif" font-size="9" fill="#888">ACADEMY</text>
+      <text x="734" y="438" text-anchor="middle" font-family="serif" font-size="18" fill="#666">⚜</text>
+
+      <!-- ════════════════════════════════════════
+           RIGHT STONE PILLAR
+      ════════════════════════════════════════ -->
+      <rect x="1140" y="200" width="92" height="620" fill="#1e1e1e" rx="1"/>
+      <rect x="1144" y="195" width="84" height="615" fill="url(#pillar-grad-r)"/>
+      <g stroke="#2a2a2a" stroke-width="0.8" opacity=".7">
+        <line x1="1144" y1="250" x2="1228" y2="250"/>
+        <line x1="1144" y1="300" x2="1228" y2="300"/>
+        <line x1="1144" y1="350" x2="1228" y2="350"/>
+        <line x1="1144" y1="400" x2="1228" y2="400"/>
+        <line x1="1144" y1="450" x2="1228" y2="450"/>
+        <line x1="1144" y1="500" x2="1228" y2="500"/>
+        <line x1="1144" y1="550" x2="1228" y2="550"/>
+        <line x1="1144" y1="600" x2="1228" y2="600"/>
+        <line x1="1144" y1="650" x2="1228" y2="650"/>
+        <line x1="1144" y1="700" x2="1228" y2="700"/>
+        <line x1="1186" y1="195" x2="1186" y2="810" opacity=".3"/>
+      </g>
+      <rect x="1132" y="183" width="108" height="22" fill="#4a4a4a" rx="2"/>
+      <rect x="1127" y="175" width="118" height="14" fill="#525252" rx="2"/>
+      <rect x="1134" y="155" width="104" height="26" fill="#3e3e3e" rx="2"/>
+      <ellipse cx="1186" cy="148" rx="20" ry="8" fill="#555"/>
+      <path d="M1166,148 Q1166,110 1186,105 Q1206,110 1206,148" fill="#484848" stroke="#333" stroke-width=".8"/>
+      <ellipse cx="1186" cy="104" rx="12" ry="5" fill="#5a5a5a"/>
+      <line x1="1186" y1="99" x2="1186" y2="85" stroke="#444" stroke-width="3"/>
+      <ellipse cx="1186" cy="83" rx="7" ry="7" fill="#555" stroke="#3a3a3a" stroke-width="1"/>
+      <!-- Lamp post on right pillar -->
+      <rect x="1176" y="380" width="60" height="70" rx="3" fill="#2a2a2a" stroke="#444" stroke-width="1"/>
+      <text x="1206" y="410" text-anchor="middle" font-family="serif" font-size="9" fill="#888">EST.</text>
+      <text x="1206" y="430" text-anchor="middle" font-family="serif" font-size="9" fill="#888">MMXV</text>
+
+      <!-- WROUGHT IRON ARCH over gate opening -->
+      <path d="M 776,200 Q 960,115 1144,200"
+            fill="none" stroke="#1a1a1a" stroke-width="10"/>
+      <path d="M 776,200 Q 960,125 1144,200"
+            fill="none" stroke="#333" stroke-width="3"/>
+      <!-- Arch decorative spikes pointing up -->
+      <g fill="#1a1a1a">
+        <polygon points="826,171 829,155 832,171"/>
+        <polygon points="876,150 879,132 882,150"/>
+        <polygon points="926,136 929,117 932,136"/>
+        <polygon points="957,128 960,108 963,128"/>
+        <polygon points="988,136 991,117 994,136"/>
+        <polygon points="1038,150 1041,132 1044,150"/>
+        <polygon points="1088,171 1091,155 1094,171"/>
+      </g>
+      <!-- FIDELIS ACADEMY text on arch -->
+      <path id="arch-text-path" d="M 800,195 Q 960,118 1120,195" fill="none"/>
+      <text font-family="serif" font-size="14" fill="#888" letter-spacing="4">
+        <textPath href="#arch-text-path" startOffset="50%" text-anchor="middle">
+          FIDELIS ACADEMY
+        </textPath>
+      </text>
+
+      <!-- GATE TOP CROSSBAR -->
+      <rect x="776" y="195" width="368" height="12" fill="#1a1a1a"/>
+      <rect x="776" y="200" width="368" height="4" fill="#2a2a2a"/>
+      <!-- GATE MID RAIL -->
+      <rect x="776" y="360" width="368" height="10" fill="#1a1a1a"/>
+      <!-- GATE LOWER RAIL -->
+      <rect x="776" y="490" width="368" height="10" fill="#1a1a1a"/>
+      <!-- GATE BOTTOM RAIL -->
+      <rect x="776" y="555" width="368" height="14" fill="#1a1a1a"/>
+
+      <!-- Center lock medallion -->
+      <circle cx="960" cy="380" r="22" fill="#1a1a1a" stroke="#333" stroke-width="1.5"/>
+      <circle cx="960" cy="380" r="15" fill="#111" stroke="#2a2a2a" stroke-width="1"/>
+      <text x="960" y="385" text-anchor="middle" font-family="serif" font-size="14" fill="#444">⚜</text>
+
+      <!-- Scrollwork on mid rail (decorative) -->
+      <g fill="none" stroke="#2a2a2a" stroke-width="1.5">
+        <path d="M840,355 Q850,340 860,355 Q870,370 880,355"/>
+        <path d="M900,355 Q910,340 920,355 Q930,370 940,355"/>
+        <path d="M980,355 Q990,340 1000,355 Q1010,370 1020,355"/>
+        <path d="M1040,355 Q1050,340 1060,355 Q1070,370 1080,355"/>
+      </g>
+    </svg>
+    <!-- END BG SVG -->
+
+    <!-- ════════════════════════════════════════
+         ANIMATED GATE DOOR HALVES
+    ════════════════════════════════════════ -->
+    <div id="gate-wrap">
+      <!-- LEFT DOOR -->
+      <div class="gate-door" id="door-left"></div>
+      <!-- RIGHT DOOR -->
+      <div class="gate-door" id="door-right"></div>
+    </div>
+
+    <!-- School Title -->
+    <div id="title">
+      <h1>FIDELIS ACADEMY</h1>
+      <p>KNOWLEDGE &nbsp;·&nbsp; HONOUR &nbsp;·&nbsp; SERVICE</p>
+    </div>
+
+    <!-- Vignette -->
+    <div id="vignette"></div>
+  </div><!-- /#scene -->
+</div><!-- /#intro -->
+
+<!-- ════════════════════════════════════════
+     CHOICES (shown after gate opens)
+════════════════════════════════════════ -->
+<div id="choices">
+  <a class="choice" href="new-students.html">
+    <div class="choice-door">
+      <div class="choice-door-inner">
+        <div class="choice-icon">✦</div>
+        <div class="choice-label">NEW STUDENTS</div>
+        <div class="choice-sub">Enquiries & Enrolment</div>
+      </div>
+    </div>
+  </a>
+  <a class="choice" href="enrolled-students.html">
+    <div class="choice-door">
+      <div class="choice-door-inner">
+        <div class="choice-icon">⚜</div>
+        <div class="choice-label">ENROLLED STUDENTS</div>
+        <div class="choice-sub">Student Portal</div>
+      </div>
+    </div>
+  </a>
+</div>
+
+<!-- Skip button -->
+<button id="skip" onclick="skipIntro()">SKIP INTRO ›</button>
+
+<!-- Grain overlay -->
+<div id="grain"></div>
+
+<script>
+  /* ── Generate gate bars via JS ── */
+  function makeDoorSVG(side) {
+    const W = 300, H = 580;
+    const BAR_W = 7;
+    const BAR_COUNT = 10;
+    const spacing = W / BAR_COUNT;
+    const railY = [0, H*0.28, H*0.535, H*0.965];
+    const railH = [14, 10, 10, 14];
+
+    let bars = '';
+    for (let i = 0; i < BAR_COUNT; i++) {
+      const x = spacing * i + spacing * 0.5 - BAR_W / 2;
+      // bar shaft
+      bars += `<rect x="${x}" y="14" width="${BAR_W}" height="${H - 28}" fill="#181818"/>`;
+      // spear finial
+      bars += `<polygon points="${x+1},14 ${x+BAR_W/2},${-12} ${x+BAR_W-1},14" fill="#1a1a1a"/>`;
+      // collar rings
+      bars += `<rect x="${x-1}" y="${H*0.26}" width="${BAR_W+2}" height="6" rx="1" fill="#222"/>`;
+      bars += `<rect x="${x-1}" y="${H*0.51}" width="${BAR_W+2}" height="6" rx="1" fill="#222"/>`;
+    }
+
+    let rails = '';
+    railY.forEach((y, i) => {
+      rails += `<rect x="0" y="${y}" width="${W}" height="${railH[i]}" fill="#1a1a1a"/>`;
+      rails += `<rect x="2" y="${y+3}" width="${W-4}" height="3" fill="#2a2a2a" opacity=".6"/>`;
+    });
+
+    // Hinge side trim
+    const hingeX = side === 'left' ? 0 : W - 8;
+    const trimFill = side === 'left'
+      ? 'linear-gradient(to right, #2a2a2a, #333)'
+      : 'linear-gradient(to left, #2a2a2a, #333)';
+
+    // Latch side trim
+    const latchX = side === 'left' ? W - 10 : 0;
+
+    let scrollwork = '';
+    for (let i = 0; i < BAR_COUNT - 1; i++) {
+      const cx = spacing * i + spacing;
+      scrollwork += `<path d="M${cx-8},${H*0.28} Q${cx},${H*0.22} ${cx+8},${H*0.28}"
+        fill="none" stroke="#222" stroke-width="1.2"/>`;
+    }
+
+    return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"
+      preserveAspectRatio="none" style="display:block;width:100%;height:100%">
+      <defs>
+        <linearGradient id="gate-bg-${side}" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="rgba(0,0,0,0)"/>
+          <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+        </linearGradient>
+      </defs>
+      ${bars}
+      ${rails}
+      ${scrollwork}
+      <!-- Hinge knuckles -->
+      <rect x="${hingeX}" y="0" width="8" height="${H}" fill="#242424"/>
+      <ellipse cx="${hingeX+4}" cy="${H*0.25}" rx="6" ry="8" fill="#2a2a2a"/>
+      <ellipse cx="${hingeX+4}" cy="${H*0.5}" rx="6" ry="8" fill="#2a2a2a"/>
+      <ellipse cx="${hingeX+4}" cy="${H*0.75}" rx="6" ry="8" fill="#2a2a2a"/>
+    </svg>`;
+  }
+
+  document.getElementById('door-left').innerHTML  = makeDoorSVG('left');
+  document.getElementById('door-right').innerHTML = makeDoorSVG('right');
+
+  /* ── Animation sequencing ── */
+  let introActive = true;
+
+  function runIntro() {
+    // Phase 1: zoom out (0 → 4s)
+    requestAnimationFrame(() => {
+      document.getElementById('scene').classList.add('zoomed');
+    });
+
+    // Phase 2: show title (3.5s)
+    setTimeout(() => {
+      document.getElementById('title').classList.add('show');
+    }, 3500);
+
+    // Phase 3: gate opens (4.2s)
+    setTimeout(() => {
+      document.getElementById('door-left').classList.add('open');
+      document.getElementById('door-right').classList.add('open');
+    }, 4200);
+
+    // Phase 4: choices appear (6.8s)
+    setTimeout(() => {
+      if (!introActive) return;
+      document.getElementById('choices').classList.add('show');
+      document.getElementById('skip').style.display = 'none';
+    }, 6800);
+  }
+
+  function skipIntro() {
+    introActive = false;
+    const scene = document.getElementById('scene');
+    scene.style.transition = 'none';
+    scene.classList.add('zoomed');
+    document.getElementById('title').classList.add('show');
+    document.getElementById('door-left').style.transition  = 'none';
+    document.getElementById('door-right').style.transition = 'none';
+    document.getElementById('door-left').classList.add('open');
+    document.getElementById('door-right').classList.add('open');
+    document.getElementById('choices').classList.add('show');
+    document.getElementById('skip').style.display = 'none';
+  }
+
+  window.addEventListener('load', () => setTimeout(runIntro, 100));
+</script>
+</body>
+</html>
