@@ -1,0 +1,46 @@
+{% extends "school/base.html" %}
+
+{% block title %}Athletica -- Fidelis Academy{% endblock %}
+
+{% block body %}
+<div class="inner-page athletics-page">
+
+  <header class="inner-header">
+    <a class="back-link" href="{% url 'students' %}">&larr; Back to Student Portal</a>
+    <div class="header-cross">&#127941;</div>
+    <h1>Athletica</h1>
+    <p class="page-subtitle">Athletics &amp; Sports</p>
+  </header>
+
+  <main class="page-content">
+    <p class="page-intro">
+      Mens sana in corpore sano &mdash; a sound mind in a sound body. Compete with honor, train with discipline, win with grace.
+    </p>
+
+    <h2 class="section-heading">&#9884; Upcoming Events</h2>
+
+    <div class="events-feed">
+      {% for event in events %}
+      <div class="event-card {% if event.type == 'Home' %}event-home{% else %}event-away{% endif %}">
+        <div class="event-sport">{{ event.sport }}</div>
+        <div class="event-details">
+          <span class="event-date">&#128197; {{ event.date }}</span>
+          <span class="event-opponent">&#9876; vs. {{ event.opponent }}</span>
+          <span class="event-location">&#128205; {{ event.location }}</span>
+        </div>
+        <div class="event-badge event-badge-{{ event.type|lower }}">{{ event.type }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="page-notice">
+      <p>&#10013; All Fidelis Academy athletes are expected to embody the virtues of Christian sportsmanship &mdash; humility in victory, dignity in defeat, and charity at all times.</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 Fidelis Academy &nbsp;&middot;&nbsp; <em>Fides &middot; Disciplina &middot; Virtus</em></p>
+  </footer>
+
+</div>
+{% endblock %}

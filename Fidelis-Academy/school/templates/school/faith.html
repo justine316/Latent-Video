@@ -1,0 +1,77 @@
+{% extends "school/base.html" %}
+
+{% block title %}Formatio Fidei -- Fidelis Academy{% endblock %}
+
+{% block body %}
+<div class="inner-page faith-page">
+
+  <header class="inner-header">
+    <a class="back-link" href="{% url 'students' %}">&larr; Back to Student Portal</a>
+    <div class="header-cross">&#10013;</div>
+    <h1>Formatio Fidei</h1>
+    <p class="page-subtitle">Faith Formation</p>
+  </header>
+
+  <main class="page-content">
+    <p class="page-intro">
+      At Fidelis Academy, faith is not a subject &mdash; it is the foundation of all learning. Our formation program integrates Catholic teaching into every aspect of student life.
+    </p>
+
+    <div class="faith-grid">
+      <div class="faith-card">
+        <div class="faith-icon">&#128367;</div>
+        <h3>Daily Prayer</h3>
+        <p>Each school day begins and ends in prayer. Morning offering, Angelus at noon, and evening prayer are central rhythms of our community life.</p>
+        <ul>
+          <li>Morning Offering at 8:00 AM</li>
+          <li>Angelus at 12:00 PM</li>
+          <li>Evening Prayer at 3:00 PM</li>
+          <li>Rosary on Fridays</li>
+        </ul>
+      </div>
+      <div class="faith-card">
+        <div class="faith-icon">&#10013;</div>
+        <h3>Sacramental Life</h3>
+        <p>We encourage regular participation in the Sacraments as the primary means of grace and spiritual growth.</p>
+        <ul>
+          <li>Weekly Mass on Wednesdays</li>
+          <li>Monthly Confession available</li>
+          <li>Feast day celebrations</li>
+          <li>Advent &amp; Lenten programs</li>
+        </ul>
+      </div>
+      <div class="faith-card">
+        <div class="faith-icon">&#129309;</div>
+        <h3>Service &amp; Charity</h3>
+        <p>Faith without works is dead. Our students engage in acts of corporal and spiritual mercy throughout the year.</p>
+        <ul>
+          <li>Community service hours required</li>
+          <li>Food bank partnerships</li>
+          <li>Prison ministry visits</li>
+          <li>Annual mission trip</li>
+        </ul>
+      </div>
+      <div class="faith-card">
+        <div class="faith-icon">&#9978;</div>
+        <h3>Retreats</h3>
+        <p>Annual retreats provide students with time for silence, reflection, and deepening their personal relationship with God.</p>
+        <ul>
+          <li>Freshmen: Encounter Retreat</li>
+          <li>Sophomores: Discernment Retreat</li>
+          <li>Juniors: Ignatian Silent Retreat</li>
+          <li>Seniors: Graduation Retreat</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="page-notice">
+      <p>&#10013; <em>&ldquo;Train up a child in the way he should go; even when he is old he will not depart from it.&rdquo;</em> &mdash; Proverbs 22:6</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 Fidelis Academy &nbsp;&middot;&nbsp; <em>Fides &middot; Disciplina &middot; Virtus</em></p>
+  </footer>
+
+</div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "school/base.html" %}
+{% load static %}
+
+{% block title %}Students -- Fidelis Academy{% endblock %}
+
+{% block body %}
+<div class="inner-page students-page">
+
+  <header class="inner-header">
+    <a class="back-link" href="{% url 'landing' %}">&larr; Return to Gate</a>
+    <div class="header-cross">&#10013;</div>
+    <h1>Discipuli</h1>
+    <p class="page-subtitle">Student Portal</p>
+  </header>
+
+  <main class="hallway-scene">
+    <p class="hallway-intro">Welcome, student. Choose your path.</p>
+
+    <div class="doors-grid">
+
+      <a class="inner-door" href="{% url 'athletics' %}">
+        <div class="inner-door-icon">&#127941;</div>
+        <div class="inner-door-latin">Athletica</div>
+        <div class="inner-door-english">Athletics</div>
+      </a>
+
+      <a class="inner-door" href="{% url 'faith' %}">
+        <div class="inner-door-icon">&#10013;</div>
+        <div class="inner-door-latin">Formatio Fidei</div>
+        <div class="inner-door-english">Faith Formation</div>
+      </a>
+
+      <a class="inner-door" href="https://athenaedu.ai/" target="_blank" rel="noopener noreferrer">
+        <div class="inner-door-icon">&#128218;</div>
+        <div class="inner-door-latin">Academia</div>
+        <div class="inner-door-english">Academics</div>
+        <div class="inner-door-badge">&#8599; Athena Edu</div>
+      </a>
+
+      <a class="inner-door" href="{% url 'pilgrimages' %}">
+        <div class="inner-door-icon">&#9962;</div>
+        <div class="inner-door-latin">Peregrinationes</div>
+        <div class="inner-door-english">Pilgrimages</div>
+      </a>
+
+      <a class="inner-door inner-door-shop" href="{% url 'shop' %}">
+        <div class="inner-door-icon">&#9884;</div>
+        <div class="inner-door-latin">Taberna</div>
+        <div class="inner-door-english">School Shop</div>
+      </a>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 Fidelis Academy &nbsp;&middot;&nbsp; <em>Fides &middot; Disciplina &middot; Virtus</em></p>
+  </footer>
+
+</div>
+{% endblock %}
