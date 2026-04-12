@@ -1,0 +1,68 @@
+{% extends "school/base.html" %}
+{% load static %}
+
+{% block title %}Fidelis Academy -- Welcome{% endblock %}
+
+{% block body %}
+<div class="landing-page">
+
+  <header class="site-header">
+    <div class="header-cross">&#10013;</div>
+    <h1 class="school-name">Fidelis Academy</h1>
+    <p class="school-tagline">A Decentralized Catholic School</p>
+    <p class="school-motto"><em>Fides &middot; Disciplina &middot; Virtus</em></p>
+  </header>
+
+  <main class="gate-scene">
+    <div class="archway">
+      <div class="archway-top">
+        <span class="arch-cross">&#10013;</span>
+        <span class="arch-fleur">&#9884;&nbsp;&nbsp;&nbsp;FIDELIS ACADEMY&nbsp;&nbsp;&nbsp;&#9884;</span>
+      </div>
+
+      <div class="gate-container" id="gate">
+        <div class="gate-half gate-left" aria-hidden="true">
+          <div class="gate-bars"></div>
+          <div class="gate-cross-ornament"></div>
+          <div class="gate-fleur-row">
+            <span>&#9884;</span><span>&#9884;</span><span>&#9884;</span>
+          </div>
+        </div>
+        <div class="gate-half gate-right" aria-hidden="true">
+          <div class="gate-bars"></div>
+          <div class="gate-cross-ornament"></div>
+          <div class="gate-fleur-row">
+            <span>&#9884;</span><span>&#9884;</span><span>&#9884;</span>
+          </div>
+        </div>
+        <div class="gate-latch" id="gate-latch">&#10022;</div>
+      </div>
+
+      <div class="doors-container" id="doors">
+        <a class="door door-students" href="{% url 'students' %}">
+          <div class="door-knocker">&#128305;</div>
+          <div class="door-label-latin">Discipuli</div>
+          <div class="door-label-english">Students</div>
+          <div class="door-arch-top"></div>
+        </a>
+        <a class="door door-prospective" href="{% url 'prospective' %}">
+          <div class="door-knocker">&#128220;</div>
+          <div class="door-label-latin">Candidati</div>
+          <div class="door-label-english">Prospective Students</div>
+          <div class="door-arch-top"></div>
+        </a>
+      </div>
+    </div>
+
+    <button class="enter-btn" id="enter-btn" aria-label="Enter Fidelis Academy">
+      <span class="enter-cross">&#10013;</span> Enter
+    </button>
+    <p class="enter-hint">Click to open the gates</p>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 Fidelis Academy &nbsp;&middot;&nbsp; A Decentralized Catholic School &nbsp;&middot;&nbsp; <em>In Veritate et Caritate</em></p>
+  </footer>
+</div>
+<script src="{% static 'js/gate.js' %}"></script>
+{% endblock %}
