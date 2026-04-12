@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: fidelis-academy
+    runtime: python
+    rootDir: Fidelis-Academy
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn fidelis.wsgi:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DJANGO_SETTINGS_MODULE
+        value: fidelis.settings
