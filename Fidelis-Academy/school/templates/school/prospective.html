@@ -1,0 +1,124 @@
+{% extends "school/base.html" %}
+
+{% block title %}Prospective Students -- Fidelis Academy{% endblock %}
+
+{% block body %}
+<div class="inner-page prospective-page">
+
+  <header class="inner-header">
+    <a class="back-link" href="{% url 'landing' %}">&larr; Return to Gate</a>
+    <div class="header-cross">&#128220;</div>
+    <h1>Candidati</h1>
+    <p class="page-subtitle">Prospective Students</p>
+  </header>
+
+  <main class="page-content">
+    <p class="page-intro">
+      Welcome, seeker. Fidelis Academy is not merely a school &mdash; it is a community of faith, learning, and virtue, united across distances by our shared Catholic identity.
+    </p>
+
+    <section class="content-section">
+      <h2 class="section-heading">&#9884; Our Mission</h2>
+      <p>Fidelis Academy provides an authentically Catholic education to families across the world through a decentralized model that honors the dignity of each family as the primary educator of their children.</p>
+    </section>
+
+    <section class="content-section">
+      <h2 class="section-heading">&#9884; Why Fidelis Academy?</h2>
+      <div class="pillars-grid">
+        <div class="pillar-card">
+          <div class="pillar-icon">&#10013;</div>
+          <h3>Faith First</h3>
+          <p>Every subject is taught in the light of Catholic truth. Faith is not an add-on &mdash; it is the integrating center of all knowledge.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-icon">&#127760;</div>
+          <h3>Decentralized</h3>
+          <p>Our distributed model means families across the country and world can participate. No boundaries, no borders &mdash; one community in Christ.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-icon">&#128106;</div>
+          <h3>Community</h3>
+          <p>Despite being distributed, our students form deep bonds through virtual community, live sessions, retreats, and pilgrimages.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2 class="section-heading">&#9884; Admissions Process</h2>
+      <ol class="steps-list">
+        <li><strong>Submit Inquiry</strong> &mdash; Complete the form below to request information.</li>
+        <li><strong>Application</strong> &mdash; Receive and complete the formal application packet.</li>
+        <li><strong>Interview</strong> &mdash; Family interview with our admissions director (virtual available).</li>
+        <li><strong>Acceptance</strong> &mdash; Receive your acceptance letter and enrollment packet.</li>
+        <li><strong>Enrollment</strong> &mdash; Submit enrollment forms and initial tuition deposit.</li>
+      </ol>
+    </section>
+
+    <section class="content-section tuition-section">
+      <h2 class="section-heading">&#9884; Tuition &amp; Payment</h2>
+      <p>Fidelis Academy offers transparent, family-centered tuition with flexible payment plans.</p>
+      <div class="tuition-options">
+        <div class="tuition-card">
+          <h3>Annual Tuition</h3>
+          <div class="tuition-amount">Contact Us</div>
+          <p>Full academic year enrollment</p>
+        </div>
+        <div class="tuition-card">
+          <h3>Payment Plans</h3>
+          <div class="tuition-amount">Monthly Available</div>
+          <p>Spread payments over the school year</p>
+        </div>
+        <div class="tuition-card">
+          <h3>Scholarships</h3>
+          <div class="tuition-amount">Need-Based</div>
+          <p>Assistance available for qualifying families</p>
+        </div>
+      </div>
+      <a class="pay-btn" href="#inquiry">Pay Tuition / Apply Now</a>
+    </section>
+
+    <section class="content-section" id="inquiry">
+      <h2 class="section-heading">&#9884; Request Information</h2>
+      <form class="inquiry-form" method="post" action="#">
+        <div class="form-row">
+          <label for="parent-name">Parent / Guardian Name</label>
+          <input type="text" id="parent-name" name="parent_name" placeholder="Full name" required />
+        </div>
+        <div class="form-row">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="your@email.com" required />
+        </div>
+        <div class="form-row">
+          <label for="student-grade">Student Grade Level</label>
+          <select id="student-grade" name="student_grade">
+            <option value="">Select grade</option>
+            <option>Kindergarten</option>
+            <option>1st Grade</option>
+            <option>2nd Grade</option>
+            <option>3rd Grade</option>
+            <option>4th Grade</option>
+            <option>5th Grade</option>
+            <option>6th Grade</option>
+            <option>7th Grade</option>
+            <option>8th Grade</option>
+            <option>9th Grade (Freshman)</option>
+            <option>10th Grade (Sophomore)</option>
+            <option>11th Grade (Junior)</option>
+            <option>12th Grade (Senior)</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="message">Questions or Comments</label>
+          <textarea id="message" name="message" rows="5" placeholder="Tell us about your family and what you're looking for..."></textarea>
+        </div>
+        <button type="submit" class="form-submit-btn">&#10013; Submit Inquiry</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 Fidelis Academy &nbsp;&middot;&nbsp; <em>Fides &middot; Disciplina &middot; Virtus</em></p>
+  </footer>
+
+</div>
+{% endblock %}

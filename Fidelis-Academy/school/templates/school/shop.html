@@ -1,0 +1,50 @@
+{% extends "school/base.html" %}
+
+{% block title %}Taberna -- Fidelis Academy{% endblock %}
+
+{% block body %}
+<div class="inner-page shop-page">
+
+  <header class="inner-header">
+    <a class="back-link" href="{% url 'students' %}">&larr; Back to Student Portal</a>
+    <div class="header-cross">&#9884;</div>
+    <h1>Taberna</h1>
+    <p class="page-subtitle">School Shop &amp; Apparel</p>
+  </header>
+
+  <main class="page-content">
+    <p class="page-intro">
+      Represent Fidelis Academy with pride. All proceeds support student programs, scholarships, and pilgrimages.
+    </p>
+
+    <div class="crest-banner">
+      <div class="crest-symbol">&#9884; &#10013; &#9884;</div>
+      <div class="crest-name">FIDELIS ACADEMY</div>
+      <div class="crest-motto"><em>Fides &middot; Disciplina &middot; Virtus</em></div>
+    </div>
+
+    <h2 class="section-heading">&#9884; Official Merchandise</h2>
+
+    <div class="shop-grid">
+      {% for item in items %}
+      <div class="shop-card">
+        <div class="shop-item-icon">{{ item.icon }}</div>
+        <h3 class="shop-item-name">{{ item.name }}</h3>
+        <p class="shop-item-desc">{{ item.desc }}</p>
+        <div class="shop-item-price">{{ item.price }}</div>
+        <button class="shop-btn">Order Now</button>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="page-notice">
+      <p>&#10013; Custom orders and bulk discounts available for families. All items ship within 5&ndash;7 business days.</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 Fidelis Academy &nbsp;&middot;&nbsp; <em>Fides &middot; Disciplina &middot; Virtus</em></p>
+  </footer>
+
+</div>
+{% endblock %}
