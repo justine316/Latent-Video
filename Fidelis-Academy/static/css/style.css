@@ -51,33 +51,51 @@ html, body {
 }
 
 /* ============================================================
-   PHOTO FALLBACK — Ken Burns POV zoom toward the mansion
+   PHOTO LAYERS — Gate approach + mansion reveal crossfade
    ============================================================ */
 
+/* Layer 1: Iron gate + stone pillars + driveway — the arrival */
 .bg-photo {
   position: absolute;
   inset: -8%;
-  /* Estate gate + driveway + mansion — matches reference photo aesthetic */
-  background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=85');
+  background-image: url('/static/img/gate.jpg');
   background-size: cover;
-  background-position: center 38%;
-  filter: grayscale(1) contrast(1.15) brightness(0.78);
+  background-position: center 48%;
+  filter: grayscale(1) contrast(1.22) brightness(0.70);
   z-index: 1;
-  animation: driveIn 18s ease-in-out infinite alternate;
-  transform-origin: center 42%;
-  will-change: transform;
+  animation: gateApproach 24s ease-in-out infinite alternate;
+  transform-origin: center 52%;
+  will-change: transform, opacity;
 }
 
-/* POV zoom: start at gate level, drift forward toward mansion */
-@keyframes driveIn {
-  0% {
-    transform: scale(1) translateY(0);
-    filter: grayscale(1) contrast(1.15) brightness(0.72);
-  }
-  100% {
-    transform: scale(1.4) translateY(-4%);
-    filter: grayscale(1) contrast(1.08) brightness(0.90);
-  }
+/* Layer 2: Brick mansion — revealed as you "pass through" the gate */
+.bg-photo-mansion {
+  position: absolute;
+  inset: -8%;
+  background-image: url('/static/img/mansion.jpg');
+  background-size: cover;
+  background-position: center 38%;
+  filter: grayscale(1) contrast(1.18) brightness(0.70);
+  z-index: 1;
+  animation: mansionReveal 24s ease-in-out infinite alternate;
+  transform-origin: center 45%;
+  will-change: transform, opacity;
+}
+
+/* POV: slowly approach the iron gate, then dissolve through */
+@keyframes gateApproach {
+  0%   { transform: scale(1);     opacity: 1;   filter: grayscale(1) contrast(1.22) brightness(0.62); }
+  50%  { transform: scale(1.28);  opacity: 1;   filter: grayscale(1) contrast(1.18) brightness(0.75); }
+  72%  { transform: scale(1.48);  opacity: 0.3; filter: grayscale(1) contrast(1.12) brightness(0.82); }
+  100% { transform: scale(1.65);  opacity: 0;   filter: grayscale(1) contrast(1.08) brightness(0.90); }
+}
+
+/* Mansion emerges as gate fades — you've arrived */
+@keyframes mansionReveal {
+  0%   { transform: scale(1.05);  opacity: 0; }
+  50%  { transform: scale(1.12);  opacity: 0; }
+  72%  { transform: scale(1.22);  opacity: 0.7; filter: grayscale(1) contrast(1.18) brightness(0.70); }
+  100% { transform: scale(1.40);  opacity: 1;   filter: grayscale(1) contrast(1.10) brightness(0.85); }
 }
 
 /* ============================================================
