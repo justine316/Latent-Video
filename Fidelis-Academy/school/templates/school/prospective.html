@@ -1,29 +1,34 @@
 {% extends "school/base.html" %}
-
-{% block title %}Prospective Students -- Fidelis Academy{% endblock %}
-
+{% load static %}
+{% block title %}Prospective Students &#8212; Fidelis Academy{% endblock %}
 {% block body %}
 <div class="inner-page prospective-page">
 
-  <header class="inner-header">
-    <a class="back-link" href="{% url 'landing' %}">&larr; Return to Gate</a>
-    <div class="header-cross">&#128220;</div>
-    <h1>Candidati</h1>
-    <p class="page-subtitle">Prospective Students</p>
-  </header>
+  <a class="back-link" href="{% url 'landing' %}">&#8592; Return to Gate</a>
+
+  <div class="page-hero">
+    <div class="page-hero-img" style="background-image:url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1600&q=80');"></div>
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-content">
+      <span class="page-hero-cross">&#128220;</span>
+      <h1>Candidati</h1>
+      <p class="page-hero-sub">Prospective Students</p>
+    </div>
+  </div>
 
   <main class="page-content">
     <p class="page-intro">
-      Welcome, seeker. Fidelis Academy is not merely a school &mdash; it is a community of faith, learning, and virtue, united across distances by our shared Catholic identity.
+      Welcome, seeker. Fidelis Academy is not merely a school &mdash; it is a community of faith,
+      learning, and virtue, united across distances by our shared Catholic identity.
     </p>
 
     <section class="content-section">
-      <h2 class="section-heading">&#9884; Our Mission</h2>
+      <h2 class="section-heading">&#9884;&nbsp; Our Mission</h2>
       <p>Fidelis Academy provides an authentically Catholic education to families across the world through a decentralized model that honors the dignity of each family as the primary educator of their children.</p>
     </section>
 
     <section class="content-section">
-      <h2 class="section-heading">&#9884; Why Fidelis Academy?</h2>
+      <h2 class="section-heading">&#9884;&nbsp; Why Fidelis Academy?</h2>
       <div class="pillars-grid">
         <div class="pillar-card">
           <div class="pillar-icon">&#10013;</div>
@@ -44,7 +49,7 @@
     </section>
 
     <section class="content-section">
-      <h2 class="section-heading">&#9884; Admissions Process</h2>
+      <h2 class="section-heading">&#9884;&nbsp; Admissions Process</h2>
       <ol class="steps-list">
         <li><strong>Submit Inquiry</strong> &mdash; Complete the form below to request information.</li>
         <li><strong>Application</strong> &mdash; Receive and complete the formal application packet.</li>
@@ -55,7 +60,7 @@
     </section>
 
     <section class="content-section tuition-section">
-      <h2 class="section-heading">&#9884; Tuition &amp; Payment</h2>
+      <h2 class="section-heading">&#9884;&nbsp; Tuition &amp; Payment</h2>
       <p>Fidelis Academy offers transparent, family-centered tuition with flexible payment plans.</p>
       <div class="tuition-options">
         <div class="tuition-card">
@@ -78,7 +83,7 @@
     </section>
 
     <section class="content-section" id="inquiry">
-      <h2 class="section-heading">&#9884; Request Information</h2>
+      <h2 class="section-heading">&#9884;&nbsp; Request Information</h2>
       <form class="inquiry-form" method="post" action="#">
         <div class="form-row">
           <label for="parent-name">Parent / Guardian Name</label>
@@ -92,19 +97,11 @@
           <label for="student-grade">Student Grade Level</label>
           <select id="student-grade" name="student_grade">
             <option value="">Select grade</option>
-            <option>Kindergarten</option>
-            <option>1st Grade</option>
-            <option>2nd Grade</option>
-            <option>3rd Grade</option>
-            <option>4th Grade</option>
-            <option>5th Grade</option>
-            <option>6th Grade</option>
-            <option>7th Grade</option>
-            <option>8th Grade</option>
-            <option>9th Grade (Freshman)</option>
-            <option>10th Grade (Sophomore)</option>
-            <option>11th Grade (Junior)</option>
-            <option>12th Grade (Senior)</option>
+            <option>Kindergarten</option><option>1st Grade</option><option>2nd Grade</option>
+            <option>3rd Grade</option><option>4th Grade</option><option>5th Grade</option>
+            <option>6th Grade</option><option>7th Grade</option><option>8th Grade</option>
+            <option>9th Grade (Freshman)</option><option>10th Grade (Sophomore)</option>
+            <option>11th Grade (Junior)</option><option>12th Grade (Senior)</option>
           </select>
         </div>
         <div class="form-row">
@@ -117,8 +114,7 @@
   </main>
 
   <footer class="site-footer">
-    <p>&copy; 2026 Fidelis Academy &nbsp;&middot;&nbsp; <em>Fides &middot; Disciplina &middot; Virtus</em></p>
+    &copy; 2026 Fidelis Academy &nbsp;&middot;&nbsp; <em>Fides &middot; Disciplina &middot; Virtus</em>
   </footer>
-
 </div>
 {% endblock %}

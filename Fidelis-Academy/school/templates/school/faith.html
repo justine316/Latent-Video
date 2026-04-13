@@ -1,20 +1,25 @@
 {% extends "school/base.html" %}
-
-{% block title %}Formatio Fidei -- Fidelis Academy{% endblock %}
-
+{% load static %}
+{% block title %}Formatio Fidei &#8212; Fidelis Academy{% endblock %}
 {% block body %}
 <div class="inner-page faith-page">
 
-  <header class="inner-header">
-    <a class="back-link" href="{% url 'students' %}">&larr; Back to Student Portal</a>
-    <div class="header-cross">&#10013;</div>
-    <h1>Formatio Fidei</h1>
-    <p class="page-subtitle">Faith Formation</p>
-  </header>
+  <a class="back-link" href="{% url 'students' %}">&#8592; Back to Portal</a>
+
+  <div class="page-hero">
+    <div class="page-hero-img" style="background-image:url('https://images.unsplash.com/photo-1548625149-720754963e8b?w=1600&q=80');"></div>
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-content">
+      <span class="page-hero-cross">&#10013;</span>
+      <h1>Formatio Fidei</h1>
+      <p class="page-hero-sub">Faith Formation</p>
+    </div>
+  </div>
 
   <main class="page-content">
     <p class="page-intro">
-      At Fidelis Academy, faith is not a subject &mdash; it is the foundation of all learning. Our formation program integrates Catholic teaching into every aspect of student life.
+      At Fidelis Academy, faith is not a subject &mdash; it is the foundation of all learning.
+      Our formation program integrates Catholic teaching into every aspect of student life.
     </p>
 
     <div class="faith-grid">
@@ -65,13 +70,12 @@
     </div>
 
     <div class="page-notice">
-      <p>&#10013; <em>&ldquo;Train up a child in the way he should go; even when he is old he will not depart from it.&rdquo;</em> &mdash; Proverbs 22:6</p>
+      &#10013; <em>&ldquo;Train up a child in the way he should go; even when he is old he will not depart from it.&rdquo;</em> &mdash; Proverbs 22:6
     </div>
   </main>
 
   <footer class="site-footer">
-    <p>&copy; 2026 Fidelis Academy &nbsp;&middot;&nbsp; <em>Fides &middot; Disciplina &middot; Virtus</em></p>
+    &copy; 2026 Fidelis Academy &nbsp;&middot;&nbsp; <em>Fides &middot; Disciplina &middot; Virtus</em>
   </footer>
-
 </div>
 {% endblock %}

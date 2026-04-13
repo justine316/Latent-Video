@@ -1,16 +1,20 @@
 {% extends "school/base.html" %}
-
-{% block title %}Taberna -- Fidelis Academy{% endblock %}
-
+{% load static %}
+{% block title %}Taberna &#8212; Fidelis Academy{% endblock %}
 {% block body %}
 <div class="inner-page shop-page">
 
-  <header class="inner-header">
-    <a class="back-link" href="{% url 'students' %}">&larr; Back to Student Portal</a>
-    <div class="header-cross">&#9884;</div>
-    <h1>Taberna</h1>
-    <p class="page-subtitle">School Shop &amp; Apparel</p>
-  </header>
+  <a class="back-link" href="{% url 'students' %}">&#8592; Back to Portal</a>
+
+  <div class="page-hero">
+    <div class="page-hero-img" style="background-image:url('https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=1600&q=80');"></div>
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-content">
+      <span class="page-hero-cross">&#9884;</span>
+      <h1>Taberna</h1>
+      <p class="page-hero-sub">School Shop &amp; Apparel</p>
+    </div>
+  </div>
 
   <main class="page-content">
     <p class="page-intro">
@@ -23,7 +27,7 @@
       <div class="crest-motto"><em>Fides &middot; Disciplina &middot; Virtus</em></div>
     </div>
 
-    <h2 class="section-heading">&#9884; Official Merchandise</h2>
+    <h2 class="section-heading">&#9884;&nbsp; Official Merchandise</h2>
 
     <div class="shop-grid">
       {% for item in items %}
@@ -38,13 +42,12 @@
     </div>
 
     <div class="page-notice">
-      <p>&#10013; Custom orders and bulk discounts available for families. All items ship within 5&ndash;7 business days.</p>
+      &#10013; Custom orders and bulk discounts available for families. All items ship within 5&ndash;7 business days.
     </div>
   </main>
 
   <footer class="site-footer">
-    <p>&copy; 2026 Fidelis Academy &nbsp;&middot;&nbsp; <em>Fides &middot; Disciplina &middot; Virtus</em></p>
+    &copy; 2026 Fidelis Academy &nbsp;&middot;&nbsp; <em>Fides &middot; Disciplina &middot; Virtus</em>
   </footer>
-
 </div>
 {% endblock %}

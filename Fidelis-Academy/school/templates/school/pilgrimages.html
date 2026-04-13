@@ -1,23 +1,28 @@
 {% extends "school/base.html" %}
-
-{% block title %}Peregrinationes -- Fidelis Academy{% endblock %}
-
+{% load static %}
+{% block title %}Peregrinationes &#8212; Fidelis Academy{% endblock %}
 {% block body %}
 <div class="inner-page pilgrimages-page">
 
-  <header class="inner-header">
-    <a class="back-link" href="{% url 'students' %}">&larr; Back to Student Portal</a>
-    <div class="header-cross">&#9962;</div>
-    <h1>Peregrinationes</h1>
-    <p class="page-subtitle">Pilgrimages</p>
-  </header>
+  <a class="back-link" href="{% url 'students' %}">&#8592; Back to Portal</a>
+
+  <div class="page-hero">
+    <div class="page-hero-img" style="background-image:url('https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=1600&q=80');"></div>
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-content">
+      <span class="page-hero-cross">&#9962;</span>
+      <h1>Peregrinationes</h1>
+      <p class="page-hero-sub">Sacred Pilgrimages</p>
+    </div>
+  </div>
 
   <main class="page-content">
     <p class="page-intro">
-      Since the earliest centuries, Christians have made sacred journeys to holy sites. Fidelis Academy carries on this tradition, offering students the transformative experience of pilgrimage.
+      Since the earliest centuries, Christians have made sacred journeys to holy sites.
+      Fidelis Academy carries on this tradition, offering students the transformative experience of pilgrimage.
     </p>
 
-    <h2 class="section-heading">&#9884; Upcoming Pilgrimages</h2>
+    <h2 class="section-heading">&#9884;&nbsp; Upcoming Pilgrimages</h2>
 
     <div class="trips-grid">
       {% for trip in trips %}
@@ -26,8 +31,8 @@
         <h3 class="trip-destination">{{ trip.destination }}</h3>
         <p class="trip-description">{{ trip.description }}</p>
         <div class="trip-meta">
-          <span class="trip-dates">&#128197; {{ trip.dates }}</span>
-          <span class="trip-duration">&#9201; {{ trip.duration }}</span>
+          <span>&#128197; {{ trip.dates }}</span>
+          <span>&#9201; {{ trip.duration }}</span>
         </div>
         <a class="trip-btn" href="#">Learn More &amp; Register</a>
       </div>
@@ -35,13 +40,13 @@
     </div>
 
     <div class="page-notice">
-      <p>&#10013; All pilgrimages are accompanied by a spiritual director. Scholarship assistance is available &mdash; no student should be prevented from pilgrimage due to financial need.</p>
+      &#10013; All pilgrimages are accompanied by a spiritual director. Scholarship assistance is available &mdash;
+      no student should be prevented from pilgrimage due to financial need.
     </div>
   </main>
 
   <footer class="site-footer">
-    <p>&copy; 2026 Fidelis Academy &nbsp;&middot;&nbsp; <em>Fides &middot; Disciplina &middot; Virtus</em></p>
+    &copy; 2026 Fidelis Academy &nbsp;&middot;&nbsp; <em>Fides &middot; Disciplina &middot; Virtus</em>
   </footer>
-
 </div>
 {% endblock %}
