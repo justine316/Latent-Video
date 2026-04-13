@@ -1,263 +1,45 @@
 {% extends "school/base.html" %}
 {% load static %}
 
-{% block title %}Fidelis Academy &#8212; Welcome{% endblock %}
+{% block title %}Fidelis Academy{% endblock %}
 
 {% block body %}
+<div class="landing-wrap">
 
-<!-- =====================================================
-     CINEMATIC SCENE (7 parallax layers, starts B&W)
-     ===================================================== -->
-<div class="scene" id="scene">
+  <!-- =====================================================
+       CINEMATIC BACKGROUND — looping POV driveway zoom
+       Swap src="" with your own video file if you have one
+       ===================================================== -->
+  <video class="bg-video" id="bg-video"
+    autoplay loop muted playsinline
+    poster="{% static 'img/gate-poster.jpg' %}">
+    <!-- <source src="{% static 'video/driveway.mp4' %}" type="video/mp4"> -->
+  </video>
 
-  <!-- LAYER 1: Sky + Moon + Stars -->
-  <div class="layer layer-sky" id="layer-sky" data-depth="0.05">
-    <div class="moon"></div>
-    <div id="stars-container"></div>
+  <!-- Fallback: CSS zoom animation on estate photo -->
+  <div class="bg-photo" id="bg-photo"></div>
+
+  <!-- Dark vignette overlay -->
+  <div class="bg-vignette"></div>
+
+  <!-- =====================================================
+       TITLE + ENTER BUTTON
+       ===================================================== -->
+  <div class="landing-ui" id="landing-ui">
+    <span class="landing-cross">&#10013;</span>
+    <h1 class="landing-title">Fidelis Academy</h1>
+    <p class="landing-tagline">A Decentralized Catholic School</p>
+    <p class="landing-motto"><em>Fides &middot; Disciplina &middot; Virtus</em></p>
+
+    <button class="landing-enter-btn" id="enter-btn">
+      &#10013;&nbsp; Enter
+    </button>
+    <p class="landing-hint" id="landing-hint">Click to enter the estate</p>
   </div>
 
-  <!-- LAYER 2: Clouds -->
-  <div class="layer layer-clouds" id="layer-clouds" data-depth="0.15">
-    <div class="cloud cloud-a"></div>
-    <div class="cloud cloud-b"></div>
-    <div class="cloud cloud-c"></div>
-  </div>
-
-  <!-- LAYER 3: Mansion silhouette (distant) -->
-  <div class="layer layer-mansion" id="layer-mansion" data-depth="0.08">
-    <div class="mansion-wrap">
-      <div class="mansion-body">
-        <div class="mansion-tower mansion-tower-l"></div>
-        <div class="mansion-tower mansion-tower-r"></div>
-        <div class="mansion-window mw1"></div>
-        <div class="mansion-window mw2"></div>
-        <div class="mansion-window mw3"></div>
-        <div class="mansion-window mw4"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- LAYER 4: Trees -->
-  <div class="layer layer-trees" id="layer-trees" data-depth="0.28">
-    <div class="tree-group tree-group-left">
-      <div class="tree t-sm"></div>
-      <div class="tree t-md"></div>
-      <div class="tree t-lg"></div>
-      <div class="tree t-xl"></div>
-    </div>
-    <div class="tree-group tree-group-right">
-      <div class="tree t-sm"></div>
-      <div class="tree t-md"></div>
-      <div class="tree t-lg"></div>
-      <div class="tree t-xl"></div>
-    </div>
-  </div>
-
-  <!-- LAYER 5: Driveway / cobblestone path -->
-  <div class="layer layer-driveway" id="layer-driveway" data-depth="0.04">
-    <div class="driveway-path"></div>
-  </div>
-
-  <!-- LAYER 6: Fog -->
-  <div class="layer layer-fog" id="layer-fog" data-depth="0.22">
-    <div class="fog-band fog-near"></div>
-    <div class="fog-band fog-mid"></div>
-  </div>
-
-  <!-- LAYER 7: Gate + Stone Pillars + Lanterns -->
-  <div class="layer layer-gate" id="layer-gate" data-depth="0.5">
-
-    <!-- Left stone pillar -->
-    <div class="pillar">
-      <div class="pillar-cap"></div>
-      <div class="pillar-body">
-        <div class="pillar-carving">&#10013;</div>
-        <div class="lantern-post"></div>
-        <div class="lantern">
-          <div class="lantern-flame"></div>
-          <div class="lantern-glow"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Iron gate -->
-    <div class="gate-frame" id="gate">
-
-      <!-- LEFT half -->
-      <div class="gate-half gate-left">
-        <svg class="gate-svg" viewBox="0 0 155 430" preserveAspectRatio="xMidYMid meet" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="gbar-l" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%"   stop-color="#111"/>
-              <stop offset="30%"  stop-color="#333"/>
-              <stop offset="70%"  stop-color="#2a2a2a"/>
-              <stop offset="100%" stop-color="#111"/>
-            </linearGradient>
-            <linearGradient id="ggold-l" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%"   stop-color="#e8cb7a"/>
-              <stop offset="100%" stop-color="#8a6f2e"/>
-            </linearGradient>
-            <linearGradient id="grail-l" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%"   stop-color="#282828"/>
-              <stop offset="50%"  stop-color="#1a1a1a"/>
-              <stop offset="100%" stop-color="#282828"/>
-            </linearGradient>
-          </defs>
-          <!-- Heavy outer frame left edge (hinge) -->
-          <rect x="0" y="0" width="8" height="430" fill="#111"/>
-          <!-- Main vertical bars (6) -->
-          <rect x="18" y="55" width="13" height="370" fill="url(#gbar-l)" rx="1.5"/>
-          <rect x="40" y="55" width="13" height="370" fill="url(#gbar-l)" rx="1.5"/>
-          <rect x="62" y="55" width="13" height="370" fill="url(#gbar-l)" rx="1.5"/>
-          <rect x="84" y="55" width="13" height="370" fill="url(#gbar-l)" rx="1.5"/>
-          <rect x="106" y="55" width="13" height="370" fill="url(#gbar-l)" rx="1.5"/>
-          <rect x="128" y="55" width="13" height="370" fill="url(#gbar-l)" rx="1.5"/>
-          <!-- Secondary thin bars (5) -->
-          <rect x="29"  y="75" width="7" height="340" fill="#0e0e0e" rx="1" opacity="0.75"/>
-          <rect x="51"  y="75" width="7" height="340" fill="#0e0e0e" rx="1" opacity="0.75"/>
-          <rect x="73"  y="75" width="7" height="340" fill="#0e0e0e" rx="1" opacity="0.75"/>
-          <rect x="95"  y="75" width="7" height="340" fill="#0e0e0e" rx="1" opacity="0.75"/>
-          <rect x="117" y="75" width="7" height="340" fill="#0e0e0e" rx="1" opacity="0.75"/>
-          <!-- Spear tips on each main bar -->
-          <polygon points="18,55 24.5,12 31,55" fill="url(#ggold-l)"/>
-          <polygon points="40,55 46.5,12 53,55" fill="url(#ggold-l)"/>
-          <polygon points="62,55 68.5,12 75,55" fill="url(#ggold-l)"/>
-          <polygon points="84,55 90.5,12 97,55" fill="url(#ggold-l)"/>
-          <polygon points="106,55 112.5,12 119,55" fill="url(#ggold-l)"/>
-          <polygon points="128,55 134.5,12 141,55" fill="url(#ggold-l)"/>
-          <!-- Small crossbars on each spear -->
-          <line x1="14"  y1="35" x2="35"  y2="35" stroke="#8a6f2e" stroke-width="1.8"/>
-          <line x1="36"  y1="35" x2="57"  y2="35" stroke="#8a6f2e" stroke-width="1.8"/>
-          <line x1="58"  y1="35" x2="79"  y2="35" stroke="#8a6f2e" stroke-width="1.8"/>
-          <line x1="80"  y1="35" x2="101" y2="35" stroke="#8a6f2e" stroke-width="1.8"/>
-          <line x1="102" y1="35" x2="123" y2="35" stroke="#8a6f2e" stroke-width="1.8"/>
-          <line x1="124" y1="35" x2="145" y2="35" stroke="#8a6f2e" stroke-width="1.8"/>
-          <!-- Horizontal rails -->
-          <rect x="0"   y="55" width="155" height="13" fill="url(#grail-l)" stroke="#8a6f2e" stroke-width="0.8"/>
-          <rect x="0"   y="128" width="155" height="9"  fill="url(#grail-l)" stroke="#8a6f2e" stroke-width="0.5"/>
-          <rect x="0"   y="230" width="155" height="11" fill="url(#grail-l)" stroke="#8a6f2e" stroke-width="0.5"/>
-          <rect x="0"   y="328" width="155" height="9"  fill="url(#grail-l)" stroke="#8a6f2e" stroke-width="0.5"/>
-          <rect x="0"   y="416" width="155" height="14" fill="url(#grail-l)" stroke="#8a6f2e" stroke-width="0.8"/>
-          <!-- Central cross medallion -->
-          <circle cx="80" cy="278" r="34" fill="none" stroke="#8a6f2e" stroke-width="2.5"/>
-          <circle cx="80" cy="278" r="26" fill="#090912" stroke="#6a5020" stroke-width="1.2"/>
-          <!-- Cross -->
-          <rect x="77" y="256" width="6" height="44" fill="#8a6f2e" rx="1"/>
-          <rect x="62" y="272" width="36" height="6" fill="#8a6f2e" rx="1"/>
-          <!-- Cardinal dots -->
-          <circle cx="80" cy="244" r="3" fill="#8a6f2e" opacity="0.7"/>
-          <circle cx="80" cy="312" r="3" fill="#8a6f2e" opacity="0.7"/>
-          <circle cx="46" cy="278" r="3" fill="#8a6f2e" opacity="0.7"/>
-          <circle cx="114" cy="278" r="3" fill="#8a6f2e" opacity="0.7"/>
-          <!-- Top arch scrollwork -->
-          <path d="M 24 70 Q 24 56 37 56 Q 50 56 50 70" fill="none" stroke="#8a6f2e" stroke-width="1.5"/>
-          <path d="M 68 70 Q 68 56 81 56 Q 94 56 94 70" fill="none" stroke="#8a6f2e" stroke-width="1.5"/>
-          <path d="M 112 70 Q 112 56 125 56 Q 138 56 138 70" fill="none" stroke="#8a6f2e" stroke-width="1.5"/>
-          <!-- Fleur-de-lis between center bars -->
-          <text x="80" y="110" text-anchor="middle" font-size="16" fill="#8a6f2e" font-family="serif" opacity="0.8">&#9884;</text>
-          <!-- Inner right edge -->
-          <rect x="147" y="0" width="8" height="430" fill="#111"/>
-        </svg>
-      </div>
-
-      <!-- RIGHT half (mirrored) -->
-      <div class="gate-half gate-right">
-        <svg class="gate-svg" viewBox="0 0 155 430" preserveAspectRatio="xMidYMid meet" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="gbar-r" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%"   stop-color="#111"/>
-              <stop offset="30%"  stop-color="#2a2a2a"/>
-              <stop offset="70%"  stop-color="#333"/>
-              <stop offset="100%" stop-color="#111"/>
-            </linearGradient>
-            <linearGradient id="ggold-r" x1="100%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%"   stop-color="#e8cb7a"/>
-              <stop offset="100%" stop-color="#8a6f2e"/>
-            </linearGradient>
-            <linearGradient id="grail-r" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%"   stop-color="#282828"/>
-              <stop offset="50%"  stop-color="#1a1a1a"/>
-              <stop offset="100%" stop-color="#282828"/>
-            </linearGradient>
-          </defs>
-          <!-- Inner left edge (meets center) -->
-          <rect x="0" y="0" width="8" height="430" fill="#111"/>
-          <!-- Main vertical bars -->
-          <rect x="14"  y="55" width="13" height="370" fill="url(#gbar-r)" rx="1.5"/>
-          <rect x="36"  y="55" width="13" height="370" fill="url(#gbar-r)" rx="1.5"/>
-          <rect x="58"  y="55" width="13" height="370" fill="url(#gbar-r)" rx="1.5"/>
-          <rect x="80"  y="55" width="13" height="370" fill="url(#gbar-r)" rx="1.5"/>
-          <rect x="102" y="55" width="13" height="370" fill="url(#gbar-r)" rx="1.5"/>
-          <rect x="124" y="55" width="13" height="370" fill="url(#gbar-r)" rx="1.5"/>
-          <!-- Secondary thin bars -->
-          <rect x="27"  y="75" width="7" height="340" fill="#0e0e0e" rx="1" opacity="0.75"/>
-          <rect x="49"  y="75" width="7" height="340" fill="#0e0e0e" rx="1" opacity="0.75"/>
-          <rect x="71"  y="75" width="7" height="340" fill="#0e0e0e" rx="1" opacity="0.75"/>
-          <rect x="93"  y="75" width="7" height="340" fill="#0e0e0e" rx="1" opacity="0.75"/>
-          <rect x="115" y="75" width="7" height="340" fill="#0e0e0e" rx="1" opacity="0.75"/>
-          <!-- Spear tips -->
-          <polygon points="14,55 20.5,12 27,55" fill="url(#ggold-r)"/>
-          <polygon points="36,55 42.5,12 49,55" fill="url(#ggold-r)"/>
-          <polygon points="58,55 64.5,12 71,55" fill="url(#ggold-r)"/>
-          <polygon points="80,55 86.5,12 93,55" fill="url(#ggold-r)"/>
-          <polygon points="102,55 108.5,12 115,55" fill="url(#ggold-r)"/>
-          <polygon points="124,55 130.5,12 137,55" fill="url(#ggold-r)"/>
-          <!-- Crossbars -->
-          <line x1="10"  y1="35" x2="31"  y2="35" stroke="#8a6f2e" stroke-width="1.8"/>
-          <line x1="32"  y1="35" x2="53"  y2="35" stroke="#8a6f2e" stroke-width="1.8"/>
-          <line x1="54"  y1="35" x2="75"  y2="35" stroke="#8a6f2e" stroke-width="1.8"/>
-          <line x1="76"  y1="35" x2="97"  y2="35" stroke="#8a6f2e" stroke-width="1.8"/>
-          <line x1="98"  y1="35" x2="119" y2="35" stroke="#8a6f2e" stroke-width="1.8"/>
-          <line x1="120" y1="35" x2="141" y2="35" stroke="#8a6f2e" stroke-width="1.8"/>
-          <!-- Horizontal rails -->
-          <rect x="0" y="55"  width="155" height="13" fill="url(#grail-r)" stroke="#8a6f2e" stroke-width="0.8"/>
-          <rect x="0" y="128" width="155" height="9"  fill="url(#grail-r)" stroke="#8a6f2e" stroke-width="0.5"/>
-          <rect x="0" y="230" width="155" height="11" fill="url(#grail-r)" stroke="#8a6f2e" stroke-width="0.5"/>
-          <rect x="0" y="328" width="155" height="9"  fill="url(#grail-r)" stroke="#8a6f2e" stroke-width="0.5"/>
-          <rect x="0" y="416" width="155" height="14" fill="url(#grail-r)" stroke="#8a6f2e" stroke-width="0.8"/>
-          <!-- Central cross medallion -->
-          <circle cx="75" cy="278" r="34" fill="none" stroke="#8a6f2e" stroke-width="2.5"/>
-          <circle cx="75" cy="278" r="26" fill="#090912" stroke="#6a5020" stroke-width="1.2"/>
-          <rect x="72" y="256" width="6" height="44" fill="#8a6f2e" rx="1"/>
-          <rect x="57" y="272" width="36" height="6" fill="#8a6f2e" rx="1"/>
-          <circle cx="75" cy="244" r="3" fill="#8a6f2e" opacity="0.7"/>
-          <circle cx="75" cy="312" r="3" fill="#8a6f2e" opacity="0.7"/>
-          <circle cx="41" cy="278" r="3" fill="#8a6f2e" opacity="0.7"/>
-          <circle cx="109" cy="278" r="3" fill="#8a6f2e" opacity="0.7"/>
-          <!-- Scrollwork -->
-          <path d="M 17 70 Q 17 56 30 56 Q 43 56 43 70" fill="none" stroke="#8a6f2e" stroke-width="1.5"/>
-          <path d="M 61 70 Q 61 56 74 56 Q 87 56 87 70" fill="none" stroke="#8a6f2e" stroke-width="1.5"/>
-          <path d="M 105 70 Q 105 56 118 56 Q 131 56 131 70" fill="none" stroke="#8a6f2e" stroke-width="1.5"/>
-          <!-- Fleur-de-lis -->
-          <text x="75" y="110" text-anchor="middle" font-size="16" fill="#8a6f2e" font-family="serif" opacity="0.8">&#9884;</text>
-          <!-- Heavy outer frame right edge (hinge) -->
-          <rect x="147" y="0" width="8" height="430" fill="#111"/>
-        </svg>
-      </div>
-
-      <!-- Gate latch (center) -->
-      <div class="gate-latch" id="gate-latch">&#9670;</div>
-    </div><!-- /.gate-frame -->
-
-    <!-- Right stone pillar -->
-    <div class="pillar">
-      <div class="pillar-cap"></div>
-      <div class="pillar-body">
-        <div class="pillar-carving">&#10013;</div>
-        <div class="lantern-post"></div>
-        <div class="lantern">
-          <div class="lantern-flame"></div>
-          <div class="lantern-glow"></div>
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /.layer-gate -->
-
-  <!-- Fireflies container (JS populates) -->
-  <div class="layer layer-fireflies" id="fireflies-container"></div>
-
-  <!-- Arrival doors (appear after gate opens) -->
+  <!-- =====================================================
+       ARRIVAL DOORS (appear after clicking Enter)
+       ===================================================== -->
   <div class="arrival-scene" id="arrival-scene">
     <a class="arrival-door arrival-door-students" href="{% url 'students' %}">
       <div class="arrival-door-light"></div>
@@ -273,21 +55,10 @@
     </a>
   </div>
 
-</div><!-- /.scene -->
+  <!-- Color-burst overlay (triggered on Enter) -->
+  <div class="color-burst" id="color-burst"></div>
 
-<!-- =====================================================
-     TITLE OVERLAY (floats above the scene)
-     ===================================================== -->
-<div class="title-overlay" id="title-overlay">
-  <span class="title-cross">&#10013;</span>
-  <h1 class="title-name">Fidelis Academy</h1>
-  <p class="title-tagline">A Decentralized Catholic School</p>
-  <p class="title-motto"><em>Fides &middot; Disciplina &middot; Virtus</em></p>
-  <button class="enter-btn" id="enter-btn" aria-label="Enter Fidelis Academy">
-    <span class="btn-cross">&#10013;</span> Enter
-  </button>
-  <p class="enter-hint" id="enter-hint">Click to open the gates</p>
-</div>
+</div><!-- /.landing-wrap -->
 
 <footer class="landing-footer" id="landing-footer">
   &copy; 2026 Fidelis Academy &nbsp;&middot;&nbsp; <em>In Veritate et Caritate</em>
