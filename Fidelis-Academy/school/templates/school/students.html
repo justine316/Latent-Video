@@ -1,60 +1,178 @@
 {% extends "school/base.html" %}
 {% load static %}
 
-{% block title %}Students -- Fidelis Academy{% endblock %}
+{% block title %}Student Portal &#8212; Fidelis Academy{% endblock %}
 
 {% block body %}
-<div class="inner-page students-page">
 
-  <header class="inner-header">
-    <a class="back-link" href="{% url 'landing' %}">&larr; Return to Gate</a>
-    <div class="header-cross">&#10013;</div>
-    <h1>Discipuli</h1>
-    <p class="page-subtitle">Student Portal</p>
-  </header>
+<!-- Color-explosion overlay (fades out on load, Wizard of Oz moment) -->
+<div class="color-flash" id="color-flash"></div>
 
-  <main class="hallway-scene">
-    <p class="hallway-intro">Welcome, student. Choose your path.</p>
+<!-- Library scene -->
+<div class="library-scene" id="library-scene">
 
-    <div class="doors-grid">
+  <!-- Ambient dust particles -->
+  <div class="dust-container" id="dust-container"></div>
 
-      <a class="inner-door" href="{% url 'athletics' %}">
-        <div class="inner-door-icon">&#127941;</div>
-        <div class="inner-door-latin">Athletica</div>
-        <div class="inner-door-english">Athletics</div>
-      </a>
+  <!-- Candle edges -->
+  <div class="candle candle-left">
+    <div class="candle-flame"></div>
+    <div class="candle-glow"></div>
+  </div>
+  <div class="candle candle-right">
+    <div class="candle-flame"></div>
+    <div class="candle-glow"></div>
+  </div>
 
-      <a class="inner-door" href="{% url 'faith' %}">
-        <div class="inner-door-icon">&#10013;</div>
-        <div class="inner-door-latin">Formatio Fidei</div>
-        <div class="inner-door-english">Faith Formation</div>
-      </a>
+  <!-- Page content -->
+  <div class="library-content">
 
-      <a class="inner-door" href="https://athenaedu.ai/" target="_blank" rel="noopener noreferrer">
-        <div class="inner-door-icon">&#128218;</div>
-        <div class="inner-door-latin">Academia</div>
-        <div class="inner-door-english">Academics</div>
-        <div class="inner-door-badge">&#8599; Athena Edu</div>
-      </a>
+    <header class="lib-header">
+      <a class="back-link" href="{% url 'landing' %}">&#8592; Return to Gate</a>
+      <span class="lib-cross">&#10013;</span>
+      <h1 class="lib-title">Discipuli</h1>
+      <p class="lib-subtitle">Student Portal &mdash; Choose Your Path</p>
+    </header>
 
-      <a class="inner-door" href="{% url 'pilgrimages' %}">
-        <div class="inner-door-icon">&#9962;</div>
-        <div class="inner-door-latin">Peregrinationes</div>
-        <div class="inner-door-english">Pilgrimages</div>
-      </a>
+    <!-- Book shelf with 5 books -->
+    <main class="bookshelf-wrap">
+      <div class="shelf-surface">
 
-      <a class="inner-door inner-door-shop" href="{% url 'shop' %}">
-        <div class="inner-door-icon">&#9884;</div>
-        <div class="inner-door-latin">Taberna</div>
-        <div class="inner-door-english">School Shop</div>
-      </a>
+        <!-- Book 1: ATHLETICA (deep red) -->
+        <a class="book book-athletica" href="{% url 'athletics' %}" aria-label="Athletics">
+          <div class="book-spine">
+            <div class="spine-top-ornament">&#9670;</div>
+            <div class="spine-title">ATHLETICA</div>
+            <div class="spine-subtitle">Athletics</div>
+            <div class="spine-icon">&#127941;</div>
+            <div class="spine-bottom-ornament">&#9670;</div>
+          </div>
+          <div class="book-page-edge"></div>
+          <div class="book-tooltip">
+            <span class="tooltip-icon">&#127941;</span>
+            <span class="tooltip-latin">Athletica</span>
+            <span class="tooltip-english">Sports &amp; Events</span>
+            <span class="tooltip-arrow">&#9658; Enter</span>
+          </div>
+        </a>
 
-    </div>
-  </main>
+        <!-- Book 2: FORMATIO FIDEI (dark purple) -->
+        <a class="book book-faith" href="{% url 'faith' %}" aria-label="Faith Formation">
+          <div class="book-spine">
+            <div class="spine-top-ornament">&#10013;</div>
+            <div class="spine-title">FORMATIO<br>FIDEI</div>
+            <div class="spine-subtitle">Faith Formation</div>
+            <div class="spine-icon">&#128316;</div>
+            <div class="spine-bottom-ornament">&#10013;</div>
+          </div>
+          <div class="book-page-edge"></div>
+          <div class="book-tooltip">
+            <span class="tooltip-icon">&#128316;</span>
+            <span class="tooltip-latin">Formatio Fidei</span>
+            <span class="tooltip-english">Faith &amp; Sacraments</span>
+            <span class="tooltip-arrow">&#9658; Enter</span>
+          </div>
+        </a>
 
-  <footer class="site-footer">
-    <p>&copy; 2026 Fidelis Academy &nbsp;&middot;&nbsp; <em>Fides &middot; Disciplina &middot; Virtus</em></p>
-  </footer>
+        <!-- Book 3: ACADEMIA (forest green) — external link -->
+        <a class="book book-academia" href="https://athenaedu.ai/" target="_blank" rel="noopener noreferrer" aria-label="Academics at Athena Edu">
+          <div class="book-spine">
+            <div class="spine-top-ornament">&#9884;</div>
+            <div class="spine-title">ACADEMIA</div>
+            <div class="spine-subtitle">Academics</div>
+            <div class="spine-icon">&#128218;</div>
+            <div class="spine-badge">&#8599;</div>
+            <div class="spine-bottom-ornament">&#9884;</div>
+          </div>
+          <div class="book-page-edge"></div>
+          <div class="book-tooltip">
+            <span class="tooltip-icon">&#128218;</span>
+            <span class="tooltip-latin">Academia</span>
+            <span class="tooltip-english">Athena Edu Login</span>
+            <span class="tooltip-arrow">&#9658; Open</span>
+          </div>
+        </a>
 
-</div>
+        <!-- Book 4: PEREGRINATIONES (navy leather) -->
+        <a class="book book-pilgrim" href="{% url 'pilgrimages' %}" aria-label="Pilgrimages">
+          <div class="book-spine">
+            <div class="spine-top-ornament">&#9670;</div>
+            <div class="spine-title">PEREGRI&shy;NATIONES</div>
+            <div class="spine-subtitle">Pilgrimages</div>
+            <div class="spine-icon">&#9962;</div>
+            <div class="spine-bottom-ornament">&#9670;</div>
+          </div>
+          <div class="book-page-edge"></div>
+          <div class="book-tooltip">
+            <span class="tooltip-icon">&#9962;</span>
+            <span class="tooltip-latin">Peregrinationes</span>
+            <span class="tooltip-english">Sacred Journeys</span>
+            <span class="tooltip-arrow">&#9658; Enter</span>
+          </div>
+        </a>
+
+        <!-- Book 5: TABERNA (burgundy) -->
+        <a class="book book-shop" href="{% url 'shop' %}" aria-label="School Shop">
+          <div class="book-spine">
+            <div class="spine-top-ornament">&#9884;</div>
+            <div class="spine-title">TABERNA</div>
+            <div class="spine-subtitle">School Shop</div>
+            <div class="spine-icon">&#128717;</div>
+            <div class="spine-bottom-ornament">&#9884;</div>
+          </div>
+          <div class="book-page-edge"></div>
+          <div class="book-tooltip">
+            <span class="tooltip-icon">&#128717;</span>
+            <span class="tooltip-latin">Taberna</span>
+            <span class="tooltip-english">Apparel &amp; Merch</span>
+            <span class="tooltip-arrow">&#9658; Enter</span>
+          </div>
+        </a>
+
+      </div><!-- /.shelf-surface -->
+
+      <!-- Shelf plank -->
+      <div class="shelf-plank"></div>
+
+    </main><!-- /.bookshelf-wrap -->
+
+    <footer class="lib-footer">
+      <p>&copy; 2026 Fidelis Academy &nbsp;&middot;&nbsp; <em>Fides &middot; Disciplina &middot; Virtus</em></p>
+    </footer>
+
+  </div><!-- /.library-content -->
+
+</div><!-- /.library-scene -->
+
+<script>
+/* Dust particles + color explosion on load */
+(function () {
+  /* Color-explosion fade */
+  var flash = document.getElementById('color-flash');
+  if (flash) {
+    requestAnimationFrame(function () {
+      flash.style.opacity = '0';
+      setTimeout(function () { flash.style.display = 'none'; }, 900);
+    });
+  }
+
+  /* Floating dust motes */
+  var dustWrap = document.getElementById('dust-container');
+  if (!dustWrap) return;
+  var frag = document.createDocumentFragment();
+  for (var i = 0; i < 30; i++) {
+    var d = document.createElement('div');
+    d.className = 'dust-mote';
+    var size  = (Math.random() * 3 + 1).toFixed(1);
+    var x     = (Math.random() * 100).toFixed(1);
+    var y     = (Math.random() * 100).toFixed(1);
+    var dur   = (Math.random() * 12 + 10).toFixed(2);
+    var delay = (Math.random() * 10).toFixed(2);
+    d.style.cssText = 'width:' + size + 'px;height:' + size + 'px;left:' + x + '%;top:' + y + '%;--ddur:' + dur + 's;--ddel:-' + delay + 's;';
+    frag.appendChild(d);
+  }
+  dustWrap.appendChild(frag);
+}());
+</script>
+
 {% endblock %}
