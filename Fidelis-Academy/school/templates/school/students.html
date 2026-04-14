@@ -145,9 +145,7 @@
 </div><!-- /.library-scene -->
 
 <script>
-/* Dust particles + color explosion on load */
 (function () {
-  /* Color-explosion fade */
   var flash = document.getElementById('color-flash');
   if (flash) {
     requestAnimationFrame(function () {
@@ -155,8 +153,6 @@
       setTimeout(function () { flash.style.display = 'none'; }, 900);
     });
   }
-
-  /* Floating dust motes */
   var dustWrap = document.getElementById('dust-container');
   if (!dustWrap) return;
   var frag = document.createDocumentFragment();
