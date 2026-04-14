@@ -58,7 +58,7 @@ html, body {
 .bg-photo {
   position: absolute;
   inset: -8%;
-  background-image: url('/static/img/gate.jpg');
+  background-image: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&q=85');
   background-size: cover;
   background-position: center 48%;
   filter: grayscale(1) contrast(1.22) brightness(0.70);
@@ -72,7 +72,7 @@ html, body {
 .bg-photo-mansion {
   position: absolute;
   inset: -8%;
-  background-image: url('/static/img/mansion.jpg');
+  background-image: url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1920&q=85');
   background-size: cover;
   background-position: center 38%;
   filter: grayscale(1) contrast(1.18) brightness(0.70);
